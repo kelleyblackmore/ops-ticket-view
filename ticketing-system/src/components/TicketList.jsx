@@ -17,6 +17,12 @@ export function TicketList({ tickets, categories }) {
             {t.tool && <span className="badge">{toolNameById[t.tool] || t.tool}</span>}
             {t.environment && <span className="badge">{t.environment}</span>}
             <span className="badge type">{t.type}</span>
+            {t.type === 'Group Access' && t.groupName && (
+              <span className="badge">Group: {t.groupName}</span>
+            )}
+            {t.type === 'Group Access' && t.groupAccess && (
+              <span className="badge">{t.groupAccess}</span>
+            )}
             <span className={`badge priority ${t.priority.toLowerCase()}`}>{t.priority}</span>
             <span className="badge status">{t.status}</span>
           </div>

@@ -5,8 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const proxyTarget = env.VITE_API_PROXY_TARGET
+  const isGitHubPages = env.GITHUB_PAGES === 'true' || mode === 'gh-pages'
   return {
     plugins: [react()],
+    // for GitHub Pages project site under /<repo>/
+    base: isGitHubPages ? '/ops-ticket-view/' : '/',
     server: proxyTarget
       ? {
           proxy: {

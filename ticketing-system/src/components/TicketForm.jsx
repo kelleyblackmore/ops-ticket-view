@@ -21,6 +21,7 @@ export function TicketForm({ categories, onCreate }) {
   function submit(e) {
     e.preventDefault();
     if (!title.trim()) return;
+    if (tool && type === 'Group Access' && !groupName.trim()) return;
     onCreate({ title: title.trim(), description: description.trim(), category, tool, type, priority, environment,
       // include dynamic fields conditionally
       ...(tool && type === 'Group Access' ? { groupName: groupName.trim(), groupAccess } : {})
