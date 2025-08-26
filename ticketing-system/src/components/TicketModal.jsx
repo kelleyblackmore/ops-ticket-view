@@ -33,6 +33,12 @@ export function TicketModal({ ticket, onClose, onUpdate }) {
           {ticket.type === 'Group Access' && ticket.groupAccess && (
             <span className="badge">{ticket.groupAccess}</span>
           )}
+          {['Create Group','Update Group','Add to Group'].includes(ticket.type) && ticket.groupName && (
+            <span className="badge">Group: {ticket.groupName}</span>
+          )}
+          {ticket.type === 'Add to Group' && ticket.memberName && (
+            <span className="badge">Member: {ticket.memberName}</span>
+          )}
           <span className={`badge priority ${ticket.priority.toLowerCase()}`}>{ticket.priority}</span>
         </div>
         <div className="row" style={{gap:'.5rem'}}>

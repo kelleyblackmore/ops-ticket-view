@@ -62,6 +62,8 @@ export const categories = [
     types: ['User Account', 'Access Request', 'Server Provisioning'],
     tools: [
       { id: 'ad', name: 'Active Directory', types: ['New User', 'Group Membership', 'Password Reset'] },
+  { id: 'ldap', name: 'LDAP', types: ['Create Group', 'Update Group', 'Add to Group'] },
+  { id: 'idm', name: 'IDM', types: ['Create Group', 'Update Group', 'Add to Group'] },
       { id: 'vsphere', name: 'VMware vSphere', types: ['Provision VM', 'CPU/RAM Change', 'Snapshot/Restore'] },
     ],
   },

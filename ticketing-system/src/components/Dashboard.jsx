@@ -99,7 +99,7 @@ export function Dashboard() {
   }, [tickets, category, status, env, query, sortBy]);
 
   function exportCsv() {
-    const headers = ['ID','Title','Category','Tool','Type','Priority','Status','Environment','GroupName','GroupAccess','CreatedAt'];
+    const headers = ['ID','Title','Category','Tool','Type','Priority','Status','Environment','GroupName','GroupAccess','Member','GroupDesc','CreatedAt'];
     const rows = filtered.map(t => [
       t.id,
       (t.title || '').replace(/\n/g,' '),
@@ -111,6 +111,8 @@ export function Dashboard() {
       t.environment || '',
       t.groupName || '',
       t.groupAccess || '',
+      t.memberName || '',
+      t.groupDesc || '',
       t.createdAt || '',
     ]);
     const csv = [headers, ...rows].map(r => r.map(v => {
