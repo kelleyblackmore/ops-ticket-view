@@ -23,6 +23,12 @@ export function TicketList({ tickets, categories }) {
             {t.type === 'Group Access' && t.groupAccess && (
               <span className="badge">{t.groupAccess}</span>
             )}
+            {['Create Group','Update Group','Add to Group'].includes(t.type) && t.groupName && (
+              <span className="badge">Group: {t.groupName}</span>
+            )}
+            {t.type === 'Add to Group' && t.memberName && (
+              <span className="badge">Member: {t.memberName}</span>
+            )}
             <span className={`badge priority ${t.priority.toLowerCase()}`}>{t.priority}</span>
             <span className="badge status">{t.status}</span>
           </div>

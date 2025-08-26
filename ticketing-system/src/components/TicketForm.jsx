@@ -12,6 +12,8 @@ export function TicketForm({ categories, onCreate }) {
   // dynamic fields
   const [groupName, setGroupName] = useState('');
   const [groupAccess, setGroupAccess] = useState('Developer');
+  const [memberName, setMemberName] = useState('');
+  const [groupDesc, setGroupDesc] = useState('');
 
   const categoryObj = useMemo(() => categories.find((c) => c.id === category) || categories[0], [categories, category]);
   const toolOptions = categoryObj?.tools || [];
@@ -22,13 +24,23 @@ export function TicketForm({ categories, onCreate }) {
     e.preventDefault();
     if (!title.trim()) return;
     if (tool && type === 'Group Access' && !groupName.trim()) return;
+    // LDAP/IDM validation
+    if ((tool === 'ldap' || tool === 'idm') && ['Create Group','Update Group','Add to Group'].includes(type)) {
+      if (!groupName.trim()) return;
+      if (type === 'Add to Group' && !memberName.trim()) return;
+    }
     onCreate({ title: title.trim(), description: description.trim(), category, tool, type, priority, environment,
       // include dynamic fields conditionally
-      ...(tool && type === 'Group Access' ? { groupName: groupName.trim(), groupAccess } : {})
+      ...(tool && type === 'Group Access' ? { groupName: groupName.trim(), groupAccess } : {}),
+      ...((tool === 'ldap' || tool === 'idm') && ['Create Group','Update Group','Add to Group'].includes(type)
+          ? { groupName: groupName.trim(), memberName: type === 'Add to Group' ? memberName.trim() : undefined, groupDesc: type !== 'Add to Group' ? groupDesc.trim() : undefined }
+          : {})
     });
     setTitle('');
     setDescription('');
     setGroupName('');
+  setMemberName('');
+  setGroupDesc('');
   }
 
   return (
@@ -92,6 +104,34 @@ export function TicketForm({ categories, onCreate }) {
               <option key={lvl} value={lvl}>{lvl}</option>
             ))}
           </select>
+        </div>
+      )}
+      {/* Dynamic fields for LDAP/IDM Group operations */}
+      {(tool === 'ldap' || tool === 'idm') && ['Create Group','Update Group','Add to Group'].includes(type) && (
+        <div className="row" style={{marginTop:'.5rem'}}>
+          <input
+            type="text"
+            placeholder="Group name"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+            required
+          />
+          {type === 'Add to Group' ? (
+            <input
+              type="text"
+              placeholder="Member username"
+              value={memberName}
+              onChange={(e) => setMemberName(e.target.value)}
+              required
+            />
+          ) : (
+            <input
+              type="text"
+              placeholder="Group description (optional)"
+              value={groupDesc}
+              onChange={(e) => setGroupDesc(e.target.value)}
+            />
+          )}
         </div>
       )}
   <button className="primary" type="submit">Create Ticket</button>

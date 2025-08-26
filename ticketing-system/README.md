@@ -23,3 +23,16 @@ Steps:
 Notes:
 - The Vite `base` is set for Pages (`/ops-ticket-view/`) when `GITHUB_PAGES=true`.
 - A `404.html` copy of `index.html` is created post-build for SPA routing on Pages.
+
+## Install and run as a package (GitHub Packages)
+
+Publish:
+- Set an auth token with `write:packages` in your npm config for GitHub Packages.
+- From `ticketing-system`, run: npm publish
+
+Install locally:
+- In another project: npm install @kelleyblackmore/ops-ticket-view --registry=https://npm.pkg.github.com/
+
+Run:
+- After install: npx ops-ticket-view
+- Or if installed globally: ops-ticket-view

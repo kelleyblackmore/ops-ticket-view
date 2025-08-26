@@ -1,6 +1,6 @@
 {
-  "name": "ticketing-system",
-  "private": true,
+  "name": "@kelleyblackmore/ops-ticket-view",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -8,9 +8,23 @@
   "build": "vite build",
   "postbuild": "cp -f dist/index.html dist/404.html",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepublishOnly": "vite build && cp -f dist/index.html dist/404.html"
+  },
+  "bin": {
+    "ops-ticket-view": "bin/ops-ticket-view.cjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "package.json"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
+    "serve-handler": "^6.1.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
