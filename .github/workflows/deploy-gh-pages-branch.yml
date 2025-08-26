@@ -1,0 +1,88 @@
+name: Deploy to gh-pages branch
+
+on:
+  push:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ticketing-system
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: ticketing-system/package.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        env:
+          GITHUB_PAGES: 'true'
+        run: |
+          npm run build
+          npm run postbuild --if-present
+          # Disable Jekyll processing so assets in dist are served as-is
+          touch dist/.nojekyll
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ticketing-system/dist
+          publish_branch: gh-pages
+          force_orphan: true
+name: Deploy to gh-pages branch
+
+on:
+  push:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ticketing-system
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: ticketing-system/package.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        env:
+          GITHUB_PAGES: 'true'
+        run: npm run build && npm run postbuild --if-present
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ticketing-system/dist
+          publish_branch: gh-pages
+          force_orphan: true
